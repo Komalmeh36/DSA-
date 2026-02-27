@@ -1,0 +1,79 @@
+#include <iostream>
+using namespace std;
+
+struct Mobile {
+    string brand;
+    int stock;
+    float price;
+    Mobile* next;
+};
+
+Mobile* head = NULL;
+
+// Add new mobile
+void addMobile(string b, int s, float p) {
+    Mobile* newNode = new Mobile();
+    newNode->brand = b;
+    newNode->stock = s;
+    newNode->price = p;
+    newNode->next = head;
+    head = newNode;
+}
+
+// Delete mobile by brand
+void deleteMobile(string b) {
+    if (head == NULL) {
+        cout << "List is empty\n";
+        return;
+    }
+
+    if (head->brand == b) {
+        Mobile* temp = head;
+        head = head->next;
+        delete temp;
+        cout << "Mobile deleted\n";
+        return;
+    }
+
+    Mobile* temp = head;
+    while (temp->next != NULL && temp->next->brand != b) {
+        temp = temp->next;
+    }
+
+    if (temp->next == NULL) {
+        cout << "Mobile not found\n";
+        return;
+    }
+
+    Mobile* del = temp->next;
+    temp->next = del->next;
+    delete del;
+    cout << "Mobile deleted\n";
+}
+
+// Display mobiles
+void displayMobiles() {
+    Mobile* temp = head;
+    while (temp != NULL) {
+        cout << "Brand: " << temp->brand
+             << ", Stock: " << temp->stock
+             << ", Price: " << temp->price << endl;
+        temp = temp->next;
+    }
+}
+
+int main() {
+    addMobile("Samsung", 10, 50000);
+    addMobile("iPhone", 5, 150000);
+    addMobile("Oppo", 20, 40000);
+
+    cout << "All Mobiles:\n";
+    displayMobiles();
+
+    deleteMobile("iPhone");
+
+    cout << "\nAfter Deletion:\n";
+    displayMobiles();
+
+    return 0;
+}
