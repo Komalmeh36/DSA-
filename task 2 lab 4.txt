@@ -1,0 +1,112 @@
+#include <iostream>
+using namespace std;
+
+struct Profile {
+    int id;
+    string name;
+    int age;
+    Profile* next;
+};
+
+Profile* head = NULL;
+
+// Create profile
+void createProfile(int id, string name, int age) {
+    Profile* newNode = new Profile();
+    newNode->id = id;
+    newNode->name = name;
+    newNode->age = age;
+    newNode->next = head;
+    head = newNode;
+}
+
+// Search profile
+void searchProfile(int id) {
+    Profile* temp = head;
+    while (temp != NULL) {
+        if (temp->id == id) {
+            cout << "Profile Found: "
+                 << temp->name << ", Age: " << temp->age << endl;
+            return;
+        }
+        temp = temp->next;
+    }
+    cout << "Profile not found\n";
+}
+
+// Update profile
+void updateProfile(int id, string newName, int newAge) {
+    Profile* temp = head;
+    while (temp != NULL) {
+        if (temp->id == id) {
+            temp->name = newName;
+            temp->age = newAge;
+            cout << "Profile updated\n";
+            return;
+        }
+        temp = temp->next;
+    }
+    cout << "Profile not found\n";
+}
+
+// Delete profile
+void deleteProfile(int id) {
+    if (head == NULL) {
+        cout << "List is empty\n";
+        return;
+    }
+
+    if (head->id == id) {
+        Profile* temp = head;
+        head = head->next;
+        delete temp;
+        cout << "Profile deleted\n";
+        return;
+    }
+
+    Profile* temp = head;
+    while (temp->next != NULL && temp->next->id != id) {
+        temp = temp->next;
+    }
+
+    if (temp->next == NULL) {
+        cout << "Profile not found\n";
+        return;
+    }
+
+    Profile* del = temp->next;
+    temp->next = del->next;
+    delete del;
+    cout << "Profile deleted\n";
+}
+
+// Display all profiles
+void displayProfiles() {
+    Profile* temp = head;
+    while (temp != NULL) {
+        cout << "ID: " << temp->id
+             << ", Name: " << temp->name
+             << ", Age: " << temp->age << endl;
+        temp = temp->next;
+    }
+}
+
+int main() {
+    createProfile(1, "Ali", 20);
+    createProfile(2, "Sara", 22);
+    createProfile(3, "Ahmed", 25);
+
+    cout << "All Profiles:\n";
+    displayProfiles();
+
+    searchProfile(2);
+
+    updateProfile(3, "Ahmed Khan", 26);
+
+    deleteProfile(1);
+
+    cout << "\nAfter Updates:\n";
+    displayProfiles();
+
+    return 0;
+}
