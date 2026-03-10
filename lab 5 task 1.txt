@@ -1,0 +1,200 @@
+#include <iostream>
+using namespace std;
+
+struct Node
+{
+    string name;
+    int score;
+    Node* prev;
+    Node* next;
+};
+
+Node* head = NULL;
+
+// Insert in sorted order
+void addPlayer(string name, int score)
+{
+    Node* newNode = new Node;
+    newNode->name = name;
+    newNode->score = score;
+    newNode->next = NULL;
+    newNode->prev = NULL;
+
+    if(head == NULL)
+    {
+        head = newNode;
+        return;
+    }
+
+    Node* temp = head;
+
+    while(temp != NULL && temp->score < score)
+        temp = temp->next;
+
+    if(temp == head)
+    {
+        newNode->next = head;
+        head->prev = newNode;
+        head = newNode;
+        return;
+    }
+
+    if(temp == NULL)
+    {
+        Node* last = head;
+        while(last->next != NULL)
+            last = last->next;
+
+        last->next = newNode;
+        newNode->prev = last;
+        return;
+    }
+
+    newNode->next = temp;
+    newNode->prev = temp->prev;
+
+    temp->prev->next = newNode;
+    temp->prev = newNode;
+}
+
+// Delete player by name
+void deletePlayer(string name)
+{
+    Node* temp = head;
+
+    while(temp != NULL && temp->name != name)
+        temp = temp->next;
+
+    if(temp == NULL)
+    {
+        cout << "Player not found\n";
+        return;
+    }
+
+    if(temp == head)
+        head = temp->next;
+
+    if(temp->prev != NULL)
+        temp->prev->next = temp->next;
+
+    if(temp->next != NULL)
+        temp->next->prev = temp->prev;
+
+    delete temp;
+}
+
+// Display players
+void display()
+{
+    Node* temp = head;
+
+    while(temp != NULL)
+    {
+        cout << temp->name << " - " << temp->score << endl;
+        temp = temp->next;
+    }
+}
+
+// Lowest score
+void lowestScore()
+{
+    if(head == NULL) return;
+
+    cout << "Lowest Score Player: "
+         << head->name << " - " << head->score << endl;
+}
+
+// Players with same score
+void sameScore(int score)
+{
+    Node* temp = head;
+
+    while(temp != NULL)
+    {
+        if(temp->score == score)
+            cout << temp->name << endl;
+
+        temp = temp->next;
+    }
+}
+
+// Backward from player
+void backward(string name)
+{
+    Node* temp = head;
+
+    while(temp != NULL && temp->name != name)
+        temp = temp->next;
+
+    if(temp == NULL)
+    {
+        cout << "Player not found\n";
+        return;
+    }
+
+    while(temp != NULL)
+    {
+        cout << temp->name << " - " << temp->score << endl;
+        temp = temp->prev;
+    }
+}
+
+int main()
+{
+    int choice;
+    string name;
+    int score;
+
+    while(true)
+    {
+        cout << "\n1 Add Player\n";
+        cout << "2 Delete Player\n";
+        cout << "3 Display Players\n";
+        cout << "4 Lowest Score Player\n";
+        cout << "5 Players with Same Score\n";
+        cout << "6 Display Backward From Player\n";
+        cout << "7 Exit\n";
+
+        cin >> choice;
+
+        switch(choice)
+        {
+        case 1:
+            cout << "Enter name: ";
+            cin >> name;
+            cout << "Enter score: ";
+            cin >> score;
+            addPlayer(name, score);
+            break;
+
+        case 2:
+            cout << "Enter name to delete: ";
+            cin >> name;
+            deletePlayer(name);
+            break;
+
+        case 3:
+            display();
+            break;
+
+        case 4:
+            lowestScore();
+            break;
+
+        case 5:
+            cout << "Enter score: ";
+            cin >> score;
+            sameScore(score);
+            break;
+
+        case 6:
+            cout << "Enter player name: ";
+            cin >> name;
+            backward(name);
+            break;
+
+        case 7:
+            return 0;
+        }
+    }
+}
