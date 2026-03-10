@@ -1,0 +1,138 @@
+#include <iostream>
+using namespace std;
+
+struct Node
+{
+    int rainfall;
+    Node* prev;
+    Node* next;
+};
+
+Node* head = NULL;
+
+// Insert at end
+void insertRainfall(int value)
+{
+    Node* newNode = new Node;
+    newNode->rainfall = value;
+    newNode->next = NULL;
+    newNode->prev = NULL;
+
+    if(head == NULL)
+    {
+        head = newNode;
+        return;
+    }
+
+    Node* temp = head;
+
+    while(temp->next != NULL)
+    {
+        temp = temp->next;
+    }
+
+    temp->next = newNode;
+    newNode->prev = temp;
+}
+
+// Display list
+void display()
+{
+    Node* temp = head;
+
+    cout << "Rainfall data:\n";
+
+    while(temp != NULL)
+    {
+        cout << temp->rainfall << " ";
+        temp = temp->next;
+    }
+
+    cout << endl;
+}
+
+// Calculate statistics
+void rainfallStats()
+{
+    if(head == NULL)
+    {
+        cout << "List is empty\n";
+        return;
+    }
+
+    Node* temp = head;
+
+    int total = 0;
+    int max = head->rainfall;
+    int min = head->rainfall;
+    int count = 0;
+
+    while(temp != NULL)
+    {
+        total += temp->rainfall;
+
+        if(temp->rainfall > max)
+            max = temp->rainfall;
+
+        if(temp->rainfall < min)
+            min = temp->rainfall;
+
+        temp = temp->next;
+        count++;
+    }
+
+    double average = (double)total / count;
+
+    cout << "\nTotal Rainfall = " << total << endl;
+    cout << "Average Rainfall = " << average << endl;
+    cout << "Highest Rainfall = " << max << endl;
+    cout << "Lowest Rainfall = " << min << endl;
+}
+
+// Rainfall after 5th node
+void rainfallAfter5th()
+{
+    Node* temp = head;
+    int count = 1;
+
+    while(temp != NULL && count < 6)
+    {
+        temp = temp->next;
+        count++;
+    }
+
+    if(temp != NULL)
+        cout << "Rainfall after 5th node = " << temp->rainfall << endl;
+    else
+        cout << "Less than 6 nodes in list\n";
+}
+
+int main()
+{
+    int rainfall;
+
+    cout << "Enter rainfall for 7 days\n";
+
+    for(int i = 1; i <= 7; i++)
+    {
+        cout << "Day " << i << ": ";
+        cin >> rainfall;
+
+        // Input validation
+        while(rainfall < 0)
+        {
+            cout << "Rainfall cannot be negative. Enter again: ";
+            cin >> rainfall;
+        }
+
+        insertRainfall(rainfall);
+    }
+
+    display();
+
+    rainfallStats();
+
+    rainfallAfter5th();
+
+    return 0;
+}
