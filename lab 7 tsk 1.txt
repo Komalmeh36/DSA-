@@ -1,0 +1,91 @@
+#include <iostream>
+using namespace std;
+
+class BookNode {
+public:
+    string title;
+    float price;
+    int edition;
+    int pages;
+    BookNode* next;
+
+    BookNode(string t, float p, int e, int pg) {
+        title = t;
+        price = p;
+        edition = e;
+        pages = pg;
+        next = NULL;
+    }
+};
+
+class Stack {
+    BookNode* top;
+
+public:
+    Stack() {
+        top = NULL;
+    }
+
+    void push(string title, float price, int edition, int pages) {
+        BookNode* newNode = new BookNode(title, price, edition, pages);
+
+        newNode->next = top;
+        top = newNode;
+    }
+
+    void pop() {
+        if (top == NULL) {
+            cout << "Stack Underflow\n";
+            return;
+        }
+
+        BookNode* temp = top;
+        cout << "Removed Book: " << temp->title << endl;
+
+        top = top->next;
+        delete temp;
+    }
+
+    void peek() {
+        if (top == NULL) {
+            cout << "Stack Empty\n";
+            return;
+        }
+
+        cout << "\nTop Book\n";
+        cout << "Title: " << top->title << endl;
+        cout << "Price: " << top->price << endl;
+        cout << "Edition: " << top->edition << endl;
+        cout << "Pages: " << top->pages << endl;
+    }
+
+    void display() {
+        BookNode* temp = top;
+
+        cout << "\nBooks in Stack:\n";
+
+        while (temp != NULL) {
+            cout << temp->title << " (Edition " << temp->edition << ")" << endl;
+            temp = temp->next;
+        }
+    }
+};
+
+int main() {
+
+    Stack s;
+
+    s.push("DSA",500,3,450);
+    s.push("OS",650,2,600);
+    s.push("Database",550,4,500);
+    s.push("Networks",700,1,480);
+    s.push("AI",800,2,550);
+
+    s.peek();
+
+    cout << "\nPop two books\n";
+    s.pop();
+    s.pop();
+
+    s.display();
+}
