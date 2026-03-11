@@ -1,0 +1,105 @@
+#include <iostream>
+using namespace std;
+
+class Inventory {
+public:
+    int serialNum;
+    int manufactYear;
+    int lotNum;
+};
+
+class Node {
+public:
+    Inventory data;
+    Node* next;
+};
+
+class Stack {
+    Node* top;
+
+public:
+    Stack() {
+        top = NULL;
+    }
+
+    void push(Inventory item) {
+        Node* newNode = new Node;
+
+        newNode->data = item;
+        newNode->next = top;
+        top = newNode;
+
+        cout << "Part added to inventory\n";
+    }
+
+    void pop() {
+        if (top == NULL) {
+            cout << "Inventory Empty\n";
+            return;
+        }
+
+        Node* temp = top;
+
+        cout << "\nRemoved Part Details:\n";
+        cout << "Serial Number: " << temp->data.serialNum << endl;
+        cout << "Manufacturing Year: " << temp->data.manufactYear << endl;
+        cout << "Lot Number: " << temp->data.lotNum << endl;
+
+        top = top->next;
+
+        delete temp;
+    }
+
+    void display() {
+        Node* temp = top;
+
+        cout << "\nRemaining Inventory:\n";
+
+        while (temp != NULL) {
+            cout << "Serial: " << temp->data.serialNum
+                 << " Year: " << temp->data.manufactYear
+                 << " Lot: " << temp->data.lotNum << endl;
+
+            temp = temp->next;
+        }
+    }
+};
+
+int main() {
+
+    Stack s;
+    int choice;
+
+    do {
+        cout << "\n1. Add Part\n";
+        cout << "2. Remove Part\n";
+        cout << "3. Exit\n";
+        cout << "Enter Choice: ";
+        cin >> choice;
+
+        if (choice == 1) {
+
+            Inventory item;
+
+            cout << "Enter Serial Number: ";
+            cin >> item.serialNum;
+
+            cout << "Enter Manufacturing Year: ";
+            cin >> item.manufactYear;
+
+            cout << "Enter Lot Number: ";
+            cin >> item.lotNum;
+
+            s.push(item);
+        }
+
+        else if (choice == 2) {
+            s.pop();
+        }
+
+    } while (choice != 3);
+
+    s.display();
+
+    return 0;
+}
