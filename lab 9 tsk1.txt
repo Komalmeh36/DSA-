@@ -1,0 +1,93 @@
+#include <iostream>
+using namespace std;
+
+struct Applicant {
+    int id;
+    float height, weight;
+    float eyesight;
+    string status;
+    Applicant* next;
+    Applicant* prev;
+};
+
+class Queue {
+    Applicant* front;
+    Applicant* rear;
+
+public:
+    Queue() {
+        front = rear = NULL;
+    }
+
+    void enqueue(int id, float h, float w, float eye, string status) {
+        Applicant* temp = new Applicant{ id, h, w, eye, status, NULL, NULL };
+
+        if(front == NULL) {
+            front = rear = temp;
+        } else {
+            rear->next = temp;
+            temp->prev = rear;
+            rear = temp;
+        }
+    }
+
+    void dequeue() {
+        if(front == NULL) {
+            cout << "No applicants\n";
+            return;
+        }
+
+        Applicant* temp = front;
+        front = front->next;
+
+        if(front != NULL)
+            front->prev = NULL;
+        else
+            rear = NULL;
+
+        delete temp;
+    }
+
+    // Remove 2nd position applicant
+    void removeSecond() {
+        if(front == NULL || front->next == NULL) {
+            cout << "Not enough applicants\n";
+            return;
+        }
+
+        Applicant* temp = front->next;
+        front->next = temp->next;
+
+        if(temp->next != NULL)
+            temp->next->prev = front;
+        else
+            rear = front;
+
+        delete temp;
+    }
+
+    void display() {
+        Applicant* temp = front;
+        while(temp) {
+            cout << temp->id << " ";
+            temp = temp->next;
+        }
+        cout << endl;
+    }
+};
+
+int main() {
+    Queue q;
+
+    q.enqueue(1,170,65,1.0,"Pending");
+    q.enqueue(2,175,70,1.2,"Pending");
+    q.enqueue(3,168,60,1.1,"Pending");
+
+    cout << "Before removal:\n";
+    q.display();
+
+    q.removeSecond();
+
+    cout << "After removing 2nd:\n";
+    q.display();
+}

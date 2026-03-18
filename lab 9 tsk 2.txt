@@ -1,0 +1,73 @@
+#include <iostream>
+#include <queue>
+#include <stack>
+using namespace std;
+
+queue<int> road;
+stack<int> garage;
+
+void onRoad(int id) {
+    road.push(id);
+}
+
+void enterGarage() {
+    if(road.empty()) {
+        cout << "No trucks on road\n";
+        return;
+    }
+
+    int id = road.front();
+    road.pop();
+    garage.push(id);
+
+    cout << "Truck " << id << " entered garage\n";
+}
+
+void exitGarage(int id) {
+    if(garage.empty()) {
+        cout << "Garage empty\n";
+        return;
+    }
+
+    if(garage.top() != id) {
+        cout << "Truck is not near garage door\n";
+        return;
+    }
+
+    garage.pop();
+    cout << "Truck " << id << " exited\n";
+}
+
+void show(string place) {
+    if(place == "road") {
+        queue<int> temp = road;
+        while(!temp.empty()) {
+            cout << temp.front() << " ";
+            temp.pop();
+        }
+    }
+    else {
+        stack<int> temp = garage;
+        while(!temp.empty()) {
+            cout << temp.top() << " ";
+            temp.pop();
+        }
+    }
+    cout << endl;
+}
+
+int main() {
+    onRoad(1);
+    onRoad(2);
+    onRoad(3);
+
+    enterGarage();
+    enterGarage();
+
+    show("garage");
+
+    exitGarage(2);
+    exitGarage(1);
+
+    show("garage");
+}
