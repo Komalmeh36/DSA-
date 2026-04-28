@@ -1,0 +1,21 @@
+Task 1: Tree Properties
+Root Node: A
+Leaf Nodes: D, E, F
+Degree of B: 2
+Height of Tree: 2 (in terms of edges)
+Level of Node E: 3
+
+Task 2: Traversals
+Inorder (LNR): 2, 3, 5, 6, 10
+Preorder (NLR): 6, 3, 2, 5, 10
+Postorder (LRN): 2, 5, 3, 10, 6
+
+Task 3: BST Insertions
+
+Final Tree after inserting 45, 25, 65, 10, 30:
+
+     45
+    /  \
+  25    65
+ /  \
+10  30
